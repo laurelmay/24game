@@ -1,0 +1,324 @@
+:root {
+    --text-color: #222;
+    --link-color: #007bff;
+    --link-hover-color: #0056b3;
+    --secondary-link-color: #6c757d;
+    --secondary-link-hover-color: #5a6268;
+
+    --primary-button-border-color: #007bff;
+    --primary-button-hover-border-color: #0056b3;
+
+    --secondary-button-border-color: #6c757d;
+    --secondary-button-hover-border-color: #5a6268;
+
+    --background-color: #f8f9fa;
+    --secondary-background-color: #e9ecef;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    color: #222;
+    font-size: 16px;
+    line-height: 1.4em;
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5em 0;
+    margin: 0 0 1em;
+    border-bottom: 1px solid #dee2e6;
+
+    .main-link {
+        margin-right: auto;
+        text-decoration: none;
+        color: var(--text-color);
+        font-size: 1.75em;
+    }
+}
+
+nav > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+
+    li {
+        margin: 0;
+        padding-right: 1em;
+        padding-left: 1em;
+    }
+
+}
+
+.nav-link {
+    color: var(--link-color);
+    text-decoration: none;
+    &.active {
+        color: var(--secondary-link-color);
+    }
+
+    &:visited {
+        color: inherit;
+    }
+
+}
+
+main {
+    flex-shrink: 0;
+    margin-bottom: 1em;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    @media screen and (min-width: 576px) {
+        max-width: 540px;
+    }
+
+    @media screen and (min-width: 768px) {
+        max-width: 720px;
+    }
+
+    @media screen and (min-width: 992px) {
+        max-width: 970px;
+    }
+
+    @media screen and (min-width: 1200px) {
+        max-width: 1170px;
+    }
+
+    @media screen and (min-width: 1400px) {
+        max-width: 1370px;
+    }
+}
+
+#solutions-list > p > math {
+    font-family: "Latin Modern Math", math;
+    font-size: 1.5em;
+}
+
+#show-solutions, #hide-solutions {
+    margin-left: 1em;
+    touch-action: manipulation;
+}
+
+input[type=number] {
+    width: 5em;
+    display: inline-block;
+    -moz-appearance: textfield;
+    line-height: 2em;
+    padding: 0.375em;
+    border-radius: 5px;
+    border: 1px solid var(--secondary-button-border-color);
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    font-size: 1em;
+}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.btn {
+    touch-action: manipulation;
+    padding: 0.5em 1em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 0.5em;
+    font-size: 1em;
+    color: white;
+    font-weight: 400;
+
+    &.btn-primary {
+        background-color: var(--link-color);
+        border-color: var(--primary-button-border-color);
+
+        &:hover {
+            background-color: var(--link-hover-color);
+            border-color: var(--primary-button-hover-border-color);
+        }
+    }
+
+    &.btn-secondary {
+        background-color: var(--secondary-link-color);
+        border-color: var(--secondary-button-border-color);
+
+        &:hover {
+            background-color: var(--secondary-link-hover-color);
+            border-color: var(--secondary-button-hover-border-color);
+        }
+    }
+
+    &.btn-small {
+        padding: 0.25em 0.5em;
+        font-size: 0.8em;
+    }
+}
+
+.input-parent {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+footer {
+    margin-top: auto;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-color: var(--secondary-background-color);
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+        text-decoration: none;
+        color: var(--text-color);
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.footer-links {
+    display: inline-flex;
+    gap: 1em;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+}
+
+input:where([type="checkbox"][role="switch"]) {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+    font-size: inherit;
+    width: 2em;
+    height: 1em;
+    box-sizing: content-box;
+    border: 1px solid gray;
+    border-radius: 1em;
+    vertical-align: text-bottom;
+    margin: auto;
+    user-select: none;
+    touch-action: manipulation;
+    background-color: var(--background-color);
+    transition: transform 0.2s linear;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(0, -50%);
+        box-sizing: border-box;
+        width: 0.8em;
+        height: 0.8em;
+        margin: 0 0.1em;
+        border: 1px solid;
+        border-radius: 50%;
+        background-color: white;
+    }
+
+    &:active {
+        opacity: 0.6;
+    }
+
+    &:checked::before {
+        left: 1em;
+    }
+
+    &:checked {
+        background-color: var(--link-color);
+    }
+}
+
+.input-parent > label {
+    margin-left: 0.5em;
+}
+
+.alert {
+    font-style: italic;
+    margin: 1em 0;
+    padding: 0.5em 1em;
+
+    &.alert-error {
+        background-color: #f8d7da;
+        border: 0.15em solid #f5c6cb;
+        color: #721c24;
+    }
+
+    &.alert-warning {
+        background-color: #fff3cd;
+        border: 0.15em solid #ffeeba;
+        color: #856404;
+    }
+
+    &.alert-success {
+        background-color: #d4edda;
+        border: 0.15em solid #c3e6cb;
+        color: #155724;
+    }
+
+    &::first-line {
+        font-weight: bold;
+    }
+}
+
+.default-hidden {
+    display: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-weight: 500;
+}
+
+.inline-math {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.inline-math mn {
+    margin-right: 0.5em;
+}
+.inline-math mn:last-child {
+    margin-right: 0;
+}

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>24 Game</title>
+    <link
+            rel="stylesheet"
+            href="https://fred-wang.github.io/MathFonts/LatinModern/mathfonts.css"/>
+    <link
+            rel="stylesheet"
+            href="/css/main.css">
+    <link
+            rel="stylesheet"
+            href="/css/index.css">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{fragments/navbar :: navbar}"></header>
+    <main>
+        <div id="game-container"></div>
+
+        <div class="input-parent">
+            <input class="switch" type="checkbox" value="" id="require-solvable" role="switch" switch checked>
+            <label for="require-solvable">
+                Require game to be solvable
+            </label>
+        </div>
+        <div id="buttons">
+            <button id="create-button" class="btn btn-primary">Create New Game</button>
+            <button id="solve-button" class="btn btn-secondary">Solve</button>
+        </div>
+        <div id="solutions"></div>
+        <div class="alert alert-error default-hidden" id="error">
+            <p>It wasn't possible to generate a game.</p>
+            <p id="error-details"></p>
+        </div>
+    </main>
+</div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script type="module" src="/js/index-support.js"></script>
+</body>
+</html>

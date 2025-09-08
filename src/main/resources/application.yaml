@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: game24
+
+server:
+  address: 0.0.0.0
+  error:
+    include-stacktrace: never
+
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -1,0 +1,8 @@
+---
+web:
+  hosts:
+    game24: {}
+  vars:
+    domains:
+      - solve24.laurelmay.me
+      - 24game.laurelmay.me

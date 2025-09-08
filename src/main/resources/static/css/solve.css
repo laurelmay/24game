@@ -1,0 +1,11 @@
+input[type=submit] {
+    margin-top: 1em;
+}
+
+#no-result {
+    display: none;
+}
+
+#error {
+    display: none;
+}

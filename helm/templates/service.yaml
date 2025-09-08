@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "game24.fullname" . }}
+  namespace: {{ $.Release.Namespace }}
+  labels: {{- include "game24.labels" . | nindent 4 }}
+spec:
+  type: {{ $.Values.service.type }}
+  ipFamilyPolicy: {{ $.Values.service.ipFamilyPolicy }}
+  ipFamilies: {{- $.Values.service.ipFamilies | toYaml | nindent 4 }}
+  ports:
+    - port: {{ $.Values.service.servicePort }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: {{ $.Values.service.managementPort }}
+      targetPort: management
+      protocol: TCP
+      name: management
+  selector: {{- include "game24.selectorLabels" . | nindent 4 }}

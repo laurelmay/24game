@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Error | 24 Solver</title>
+    <link
+            rel="stylesheet"
+            href="/css/main.css">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{fragments/navbar :: navbar}"></header>
+    <main>
+        <div class="alert alert-error">
+            <h4 class="alert-heading">
+                An error occurred
+            </h4>
+            <hr>
+            <p>
+                <span th:text="${status}"></span>
+                <span th:text="${error}"></span>
+            </p>
+        </div>
+    </main>
+</div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>

@@ -1,0 +1,14 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "game24.fullname" . }}
+  namespace: {{ $.Release.Namespace }}
+  labels: {{- include "game24.labels" . | nindent 4 }}
+spec:
+  endpoints:
+    - port: management
+      path: actuator/prometheus
+  selector:
+    matchLabels:
+      {{- include "game24.selectorLabels" . | nindent 6 }}

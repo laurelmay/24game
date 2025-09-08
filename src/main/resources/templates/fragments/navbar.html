@@ -1,0 +1,15 @@
+<header th:fragment="navbar">
+    <a class="main-link" href="/">24 Game</a>
+    <nav>
+        <ul th:with="pages=${ { {'Home', '/'}, {'Solve', '/solve'} } }">
+            <li th:each="page : ${pages}">
+                <a class="nav-link"
+                   th:with="isActive=${#strings.equals(currentPath, page[1])}"
+                   th:classappend="${isActive} ? 'active' : null"
+                   th:attr="aria-current=${isActive ? 'page' : null}"
+                   th:href="${page[1]}"
+                   th:text="${page[0]}"></a>
+            </li>
+        </ul>
+    </nav>
+</header>

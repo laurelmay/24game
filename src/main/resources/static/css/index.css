@@ -1,0 +1,32 @@
+#game-container {
+    margin-top: 2em;
+    margin-bottom: 2em;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 2em;
+
+    @media screen and (max-width: 768px) {
+        justify-content: center;
+    }
+
+    math {
+        font-family: "Latin Modern Math", math;
+        font-size: 1.75em;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 60%;
+        max-width: 10em;
+    }
+}
+
+#create-button, #info-popover, #solve-button {
+    touch-action: manipulation;
+}
+
+#buttons {
+    margin-top: 1em;
+}

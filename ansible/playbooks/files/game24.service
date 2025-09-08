@@ -1,0 +1,44 @@
+[Unit]
+Description=Solve24 Spring Boot Application
+After=network-online.target
+
+[Service]
+ExecStart=java -jar /opt/game24/game24.jar -XX:+UseShenandoahGC
+DynamicUser=yes
+Restart=on-failure
+RestartSec=5s
+Type=exec
+SuccessExitStatus=143
+RootEphemeral=yes
+ProtectControlGroups=yes
+PrivateDevices=yes
+ProtectClock=yes
+ProtectKernelLogs=yes
+SystemCallArchitectures=native
+RestrictNamespaces=yes
+ProtectHostname=yes
+LockPersonality=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictRealtime=yes
+ProtectHome=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectProc=invisible
+ProcSubset=pid
+PrivateUsers=yes
+IPAddressDeny=any
+IPAddressAllow=127.0.0.0/8 ::1/128
+CapabilityBoundingSet=
+SystemCallFilter=@system-service
+UMask=077
+SocketBindDeny=any
+SocketBindAllow=tcp:8080
+SocketBindAllow=tcp:8081
+InaccessiblePaths=/dev/shm
+NoExecPaths=/
+ExecPaths=/usr/bin/java /usr/lib
+
+[Install]
+WantedBy=multi-user.target

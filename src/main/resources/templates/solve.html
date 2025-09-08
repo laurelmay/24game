@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" >
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solver | 24 Game</title>
+    <link
+            rel="stylesheet"
+            href="https://fred-wang.github.io/MathFonts/LatinModern/mathfonts.css"/>
+    <link
+            rel="stylesheet"
+            href="/css/main.css">
+    <link
+            rel="stylesheet"
+            href="/css/solve.css">
+</head>
+<body>
+<div class="container">
+    <header th:replace="~{fragments/navbar :: navbar}"></header>
+    <main >
+        <p>Provide four numbers to find ways that they add, subtract, multiply, and divide to equal <math><mn>24</mn></math>:</p>
+        <form id="form">
+            <div class="mb-2">
+                <input type="number" name="first" id="first" class="number-input" required min="0">
+                <input type="number" name="second" id="second" class="number-input" required min="0">
+                <input type="number" name="third" id="third" class="number-input" required min="0">
+                <input type="number" name="fourth" id="fourth" class="number-input" required min="0">
+            </div>
+            <input type="submit" class="btn btn-primary" value="Find Solution">
+        </form>
+
+        <div class="mt-4">
+            <div id="solutions"></div>
+            <div class="alert alert-warning" id="no-result">
+                <p>No solution was found for this input.</p>
+            </div>
+            <div class="alert alert-danger" id="error">
+                <p>An error occurred.</p>
+                <p id="error-details"></p>
+            </div>
+        </div>
+    </main>
+</div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script type="module" src="/js/solve-support.js"></script>
+</body>
+</html>
