@@ -3,10 +3,6 @@
 This application supports solving and generating 24 game puzzles. The 24 game is a math puzzle game where
 you add, subtract, multiply, and divide two numbers to find the number 24.
 
-## Why is the name like that?
-
-Because you can't start a Java package with a number.
-
 ## Deploying
 
 The application can be deployed in one of two ways:
