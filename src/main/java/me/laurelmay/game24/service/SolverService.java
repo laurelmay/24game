@@ -17,6 +17,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,7 +57,14 @@ public class SolverService {
     }
 
     private List<Operation> toOperations(List<Integer> numbers, List<Class<? extends Operation>> operations) {
-        return Stream.concat(toLeftToRightOperations(numbers, operations).stream(), toOuterPairOperations(numbers, operations).stream()).toList();
+        return Stream.of(
+                toLeftToRightOperations(numbers, operations).stream(),
+                toLeftToRightOperationsGroupingSecondAndThird(numbers, operations).stream(),
+                toOuterPairOperations(numbers, operations).stream(),
+                toRightToLeftOperations(numbers, operations).stream()
+        )
+                .flatMap(Function.identity())
+                .toList();
     }
 
     private Optional<Operation> toOuterPairOperations(List<Integer> numbers, List<Class<? extends Operation>> operations) {
@@ -75,6 +83,39 @@ public class SolverService {
             Operand a = new Operand.Expression(findConstructor(operations.get(0)).newInstance(new Operand.Number(numbers.get(0)), new Operand.Number(numbers.get(1))));
             Operand b = new Operand.Expression(findConstructor(operations.get(1)).newInstance(a, new Operand.Number(numbers.get(2))));
             return Optional.of(findConstructor(operations.get(2)).newInstance(b, new Operand.Number(numbers.get(3))));
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+                 InvocationTargetException e) {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Operation> toLeftToRightOperationsGroupingSecondAndThird(List<Integer> numbers, List<Class<? extends Operation>> operations) {
+        try {
+            Operand inner = new Operand.Expression(findConstructor(operations.get(1)).newInstance(new Operand.Number(numbers.get(1)), new Operand.Number(numbers.get(2))));
+            Operand left = new Operand.Expression(findConstructor(operations.get(0)).newInstance(new Operand.Number(numbers.get(0)), inner));
+            return Optional.of(findConstructor(operations.get(2)).newInstance(left, new Operand.Number(numbers.get(3))));
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+                 InvocationTargetException e) {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Operation> toRightToLeftOperations(List<Integer> numbers, List<Class<? extends Operation>> operations) {
+        try {
+            Operand inner = new Operand.Expression(findConstructor(operations.get(2)).newInstance(new Operand.Number(numbers.get(2)), new Operand.Number(numbers.get(3))));
+            Operand right = new Operand.Expression(findConstructor(operations.get(1)).newInstance(new Operand.Number(numbers.get(1)), inner));
+            return Optional.of(findConstructor(operations.get(0)).newInstance(new Operand.Number(numbers.get(0)), right));
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+                 InvocationTargetException e) {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Operation> toRightToLeftOperationGroupingSecondAndThird(List<Integer> numbers, List<Class<? extends Operation>> operations) {
+        try {
+            Operand inner = new Operand.Expression(findConstructor(operations.get(1)).newInstance(new Operand.Number(numbers.get(1)), new Operand.Number(numbers.get(2))));
+            Operand right = new Operand.Expression(findConstructor(operations.get(2)).newInstance(inner, new Operand.Number(numbers.get(3))));
+            return Optional.of(findConstructor(operations.get(0)).newInstance(new Operand.Number(numbers.get(0)), right));
         } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
                  InvocationTargetException e) {
             return Optional.empty();
