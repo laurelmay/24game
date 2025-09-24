@@ -40,7 +40,7 @@ jobs:
         name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '24'
+          java-version: '25'
           distribution: 'temurin'
       - if: matrix.language == 'java-kotlin'
         name: Setup Gradle

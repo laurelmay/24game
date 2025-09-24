@@ -3,6 +3,22 @@
   become: true
   hosts: all
   tasks:
+    - name: Setup Eclipse Temurin repository key
+      ansible.builtin.apt_key:
+        id: 3B04D753C9050D9A5D343F39843C48A565F8F04B
+        url: https://packages.adoptium.net/artifactory/api/gpg/key/public
+        keyring: /etc/apt/trusted.gpg.d/adoptium.gpg
+        state: present
+    - name: Setup Eclipse Temurin repository
+      ansible.builtin.apt_repository:
+        repo: >-
+          deb [signed-by=/etc/apt/trusted.gpg.d/adoptium.gpg]
+          https://packages.adoptium.net/deb {{ ansible_distribution_release }} main
+    - name: Install Java
+      ansible.builtin.apt:
+        name: temurin-25-jre
+        state: latest
+        update_cache: true
     - name: Setup Nginx repository key
       ansible.builtin.apt_key:
         id: 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62

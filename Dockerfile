@@ -1,4 +1,4 @@
-FROM docker.io/library/eclipse-temurin:24-jre
+FROM docker.io/library/eclipse-temurin:25-jre
 
 RUN useradd --system --home-dir /opt/game24 --create-home --user-group game24
 USER game24
