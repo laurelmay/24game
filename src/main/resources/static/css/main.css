@@ -15,7 +15,9 @@
     --secondary-background-color: #e9ecef;
 }
 
-* {
+*,
+::before,
+::after {
     box-sizing: border-box;
 }
 
@@ -26,7 +28,7 @@ html {
 body {
     color: #222;
     font-size: 16px;
-    line-height: 1.4em;
+    line-height: 1.5em;
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     display: flex;
     height: 100%;
@@ -34,6 +36,18 @@ body {
     margin: 0;
     padding: 0;
     max-width: 100%;
+}
+
+button, input {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15em;
+  margin: 0;
+}
+
+button, input[type=submit] {
+    cursor: pointer;
+    border-style: none;
 }
 
 header {
