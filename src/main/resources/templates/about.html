@@ -6,9 +6,6 @@
     <title>About | 24 Game</title>
     <link
             rel="stylesheet"
-            href="https://fred-wang.github.io/MathFonts/LatinModern/mathfonts.css"/>
-    <link
-            rel="stylesheet"
             href="/css/main.css">
     <link
             rel="stylesheet"
@@ -20,8 +17,15 @@
     <main class="flex-shrink-0 mb-2">
         <h1>About</h1>
         <p>
-            <math><mn>24</mn></math> is an arithmetic puzzle game where you add, subtract, multiple, and divide
-            four numbers to find <math><mn>24</mn></math>. This is an implementation of the game that allows for
+            <math>
+                <mn>24</mn>
+            </math>
+            is an arithmetic puzzle game where you add, subtract, multiple, and divide
+            four numbers to find
+            <math>
+                <mn>24</mn>
+            </math>
+            . This is an implementation of the game that allows for
             generating random games as well as solving any games.
         </p>
 
@@ -38,7 +42,11 @@
             For each input of four numbers, all possible unique orderings are found; then all possible unique orderings
             of three operations (out of addition, subtraction, multiplication, and division) are found. The cartesian
             product of those two sets is then used to generate all possible candidate solutions. Each is then computed
-            and check to see whether it results in <math><mn>24</mn></math>.
+            and check to see whether it results in
+            <math>
+                <mn>24</mn>
+            </math>
+            .
         </p>
         <p>
             The program tries to reduce the number of repetitive solutions by removing those that are equivalent by
@@ -51,11 +59,24 @@
             To avoid returning an overwhelming number of solutions, there are some simple rules applied to division
             and subtraction to prohibit certain situations. Subtraction is prohibited when the result would be negative.
             Division is prohibited when the result would have a remainder. These rules do prevent certain inputs from
-            being solvable (for example, <wbr><math class="inline-math"><mrow><mn>3</mn> <mn>3</mn> <mn>8</mn> <mn>8</mn></mrow></math>).
+            being solvable (for example,
+            <wbr>
+            <math class="inline-math">
+                <mrow>
+                    <mn>3</mn>
+                    <mn>3</mn>
+                    <mn>8</mn>
+                    <mn>8</mn>
+                </mrow>
+            </math>
+            ).
         </p>
         <h2>License</h2>
         <p>
-            <math><mn>24</mn></math> is a widely known arithmetic puzzle game. This is an implementation of that game.
+            <math>
+                <mn>24</mn>
+            </math>
+            is a widely known arithmetic puzzle game. This is an implementation of that game.
             This implementation is licensed under the <a href="/LICENSE.txt" target="_blank">MIT License</a> and its
             source code is available on GitHub at <a href="https://github.com/laurelmay/24game" target="_blank">laurelmay/24game</a>.
         </p>

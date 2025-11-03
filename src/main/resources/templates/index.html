@@ -6,9 +6,6 @@
     <title>24 Game</title>
     <link
             rel="stylesheet"
-            href="https://fred-wang.github.io/MathFonts/LatinModern/mathfonts.css"/>
-    <link
-            rel="stylesheet"
             href="/css/main.css">
     <link
             rel="stylesheet"
@@ -20,12 +17,7 @@
     <main>
         <div id="game-container"></div>
 
-        <div class="input-parent">
-            <input class="switch" type="checkbox" value="" id="require-solvable" role="switch" switch checked>
-            <label for="require-solvable">
-                Require game to be solvable
-            </label>
-        </div>
+        <div th:replace="~{fragments/game-rules :: game-rules(true)}"></div>
         <div id="buttons">
             <button id="create-button" class="btn btn-primary">Create New Game</button>
             <button id="solve-button" class="btn btn-secondary">Solve</button>
@@ -38,6 +30,13 @@
     </main>
 </div>
 <footer th:replace="~{fragments/footer :: footer}"></footer>
+<script>
+    MathJax = {
+        options: {
+            enableMenu: false,
+        }
+    };
+</script>
 <script type="module" src="/js/index-support.js"></script>
 </body>
 </html>

@@ -39,6 +39,8 @@
           - nginx-module-acme
         state: latest
         update_cache: true
+      notify:
+        - Restart Nginx
     - name: Setup game24.service
       ansible.builtin.copy:
         src: game24.service

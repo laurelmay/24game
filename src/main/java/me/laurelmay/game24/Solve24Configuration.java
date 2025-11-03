@@ -14,17 +14,17 @@ import java.util.List;
 @EnableCaching
 public class Solve24Configuration {
 
-    @Bean
-    CacheManager cacheManager() {
-        SimpleCacheManager cacheManager = new SimpleCacheManager();
-        cacheManager.setCaches(List.of(new ConcurrentMapCache("solutions")));
-        return cacheManager;
-    }
+  @Bean
+  CacheManager cacheManager() {
+    SimpleCacheManager cacheManager = new SimpleCacheManager();
+    cacheManager.setCaches(List.of(new ConcurrentMapCache("solutions")));
+    return cacheManager;
+  }
 
-    @Bean
-    SortedListKeyGenerator sortedListKeyGenerator() {
-        return new SortedListKeyGenerator();
-    }
+  @Bean
+  SortedListKeyGenerator sortedListKeyGenerator() {
+    return new SortedListKeyGenerator();
+  }
 
 
 }

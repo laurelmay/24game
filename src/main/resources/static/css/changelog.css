@@ -1,0 +1,8 @@
+.changelog-release {
+    margin-bottom: 2em;
+}
+
+.changelog-release > h2 {
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid lightgray;
+}

@@ -1,12 +1,9 @@
 <!doctype html>
-<html lang="en" >
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Solver | 24 Game</title>
-    <link
-            rel="stylesheet"
-            href="https://fred-wang.github.io/MathFonts/LatinModern/mathfonts.css"/>
     <link
             rel="stylesheet"
             href="/css/main.css">
@@ -17,8 +14,13 @@
 <body>
 <div class="container">
     <header th:replace="~{fragments/navbar :: navbar}"></header>
-    <main >
-        <p>Provide four numbers to find ways that they add, subtract, multiply, and divide to equal <math><mn>24</mn></math>:</p>
+    <main>
+        <p>Provide four numbers to find ways that they add, subtract, multiply, and divide to equal
+            <math>
+                <mn>24</mn>
+            </math>
+            :
+        </p>
         <form id="form">
             <div class="mb-2">
                 <input type="number" name="first" id="first" class="number-input" required min="0">
@@ -26,6 +28,7 @@
                 <input type="number" name="third" id="third" class="number-input" required min="0">
                 <input type="number" name="fourth" id="fourth" class="number-input" required min="0">
             </div>
+            <div th:replace="~{fragments/game-rules :: game-rules(false)}"></div>
             <input type="submit" class="btn btn-primary" value="Find Solution">
         </form>
 

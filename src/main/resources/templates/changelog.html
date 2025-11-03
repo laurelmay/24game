@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Changelog | 24 Game</title>
+    <link
+            rel="stylesheet"
+            href="/css/main.css">
+    <link
+            rel="stylesheet"
+            href="/css/changelog.css">
+</head>
+<body class="d-flex flex-column h-100">
+<div class="container">
+    <header th:replace="~{fragments/navbar :: navbar}" class="d-flex flex-shink-0"></header>
+    <main class="flex-shrink-0 mb-2">
+        <h1>Changelog</h1>
+        <div class="changelog-release">
+            <h2>Version 0.0.2 &mdash; 2025-11-02</h2>
+            <h3>New Features</h3>
+            <ul>
+                <li>Added support for new operations (exponentiation, logarithm, and nth root)</li>
+                <li>The operators allowed to be used in a game are now configurable</li>
+                <li>The target value is now configurable</li>
+                <li>The range of numbers to use in generated games is now configurable</li>
+            </ul>
+            <h3>Improvements</h3>
+            <ul>
+                <li>Division is now represented using fraction notation</li>
+                <li>The primary font for rendering math has been improved</li>
+                <li>Preferences are stored between pages and reloads</li>
+                <li>The toggle for whether games must be solvable is now grouped with other game rules</li>
+            </ul>
+            <h3>Bug Fixes</h3>
+            <ul>
+                <li>Some math would render incorrectly or fail to render at all</li>
+            </ul>
+        </div>
+        <div class="changelog-release">
+            <h2>Version 0.0.1 &mdash; 2025-09-08</h2>
+            <h3>Improvements</h3>
+            <ul>
+                <li>The game was made available at a better domain name</li>
+            </ul>
+            <h3>Bug Fixes</h3>
+            <ul>
+                <li>Some variations of nested parentheses would not be discovered as solutions</li>
+            </ul>
+        </div>
+        <div class="changelog-release">
+            <h2>Version 0.0.0 &mdash; 2025-08-18</h2>
+            <h3>New Features</h3>
+            <ul>
+                <li>Initial release of the 24 solver</li>
+            </ul>
+        </div>
+    </main>
+
+
+</div>
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+<script type="module" src="/js/index-support.js"></script>
+</body>
+</html>

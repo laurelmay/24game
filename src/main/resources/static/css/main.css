@@ -1,3 +1,11 @@
+@font-face {
+    font-family: "Latin Modern Math";
+    src: url('/fonts/latinmodern-math.otf');
+}
+@font-face {
+    font-family: "STIX Two Math";
+    src: url('/fonts/STIXTwoMath-Regular.ttf');
+}
 :root {
     --text-color: #222;
     --link-color: #007bff;
@@ -39,10 +47,10 @@ body {
 }
 
 button, input {
-  font-family: inherit;
-  font-size: 100%;
-  line-height: 1.15em;
-  margin: 0;
+    font-family: inherit;
+    font-size: 100%;
+    line-height: 1.15em;
+    margin: 0;
 }
 
 button, input[type=submit] {
@@ -87,6 +95,7 @@ nav > ul {
 .nav-link {
     color: var(--link-color);
     text-decoration: none;
+
     &.active {
         color: var(--secondary-link-color);
     }
@@ -131,7 +140,6 @@ main {
 }
 
 #solutions-list > p > math {
-    font-family: "Latin Modern Math", math;
     font-size: 1.5em;
 }
 
@@ -152,6 +160,7 @@ input[type=number] {
     margin-bottom: 0.25em;
     font-size: 1em;
 }
+
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -194,13 +203,6 @@ input[type=number]::-webkit-inner-spin-button {
         padding: 0.25em 0.5em;
         font-size: 0.8em;
     }
-}
-
-.input-parent {
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
 }
 
 footer {
@@ -283,10 +285,6 @@ input:where([type="checkbox"][role="switch"]) {
     }
 }
 
-.input-parent > label {
-    margin-left: 0.5em;
-}
-
 .alert {
     font-style: italic;
     margin: 1em 0;
@@ -325,6 +323,10 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
 }
 
+math {
+    font-family: "STIX Two Math", "Latin Modern Math", math;
+}
+
 .inline-math {
     display: inline-block;
     white-space: nowrap;
@@ -333,6 +335,60 @@ h1, h2, h3, h4, h5, h6 {
 .inline-math mn {
     margin-right: 0.5em;
 }
+
 .inline-math mn:last-child {
     margin-right: 0;
+}
+
+.game-rules {
+    margin-top: 1em;
+    padding: 1em 1em 1em 0.5em;
+    width: 100%;
+    background-color: var(--secondary-background-color);
+}
+
+.solvability-prompt {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.solvability-prompt > label {
+    margin-left: 0.5em;
+}
+
+.rule-section {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.rule-title {
+    font-weight: bold;
+}
+
+.rule-input {
+    margin-left: 1em;
+}
+
+.rule-input.rule-input-checkboxes {
+    @media screen and (min-width: 576px) {
+        display: block;
+    }
+    @media screen and (min-width: 1400px) {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+}
+
+.rule-checkbox-column {
+    flex: 1;
+}
+
+.rule-checkbox > input[type=checkbox] {
+    margin-right: 0.25em;
+    + label {
+        font-weight: normal;
+    }
 }

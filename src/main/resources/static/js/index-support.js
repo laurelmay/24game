@@ -1,17 +1,30 @@
-import { loadSolution } from "./load-solution.js";
+import {loadSolution} from "./load-solution.js";
+import {
+    applyCreateGameSettings,
+    applyRulesToInputs,
+    loadCreateGameSettings, loadGameRules,
+    saveCreateGameSettings,
+    saveGameRules
+} from "./game-rules.js";
 
 let isSolved = false;
 
 export async function loadGame() {
     isSolved = false;
+    const rules = loadGameRules();
+    const solveConfig = loadCreateGameSettings();
     document.getElementById("solutions").style.display = "none";
-    const requireSolvable = document.getElementById("require-solvable").checked;
     const signal = AbortSignal.timeout(2500);
-    await fetch(`/api/random-game?` + new URLSearchParams({ solvability: requireSolvable ? 'SOLVABLE' : 'UNKNOWN' }), {
-        method: 'GET',
+    await fetch(`/api/random-game`, {
+        method: 'POST',
         headers: {
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+            ...solveConfig,
+            gameRuleSettings: rules,
+        }),
         signal,
     })
         .then(response => response.json())
@@ -53,12 +66,13 @@ function createNumberElement(value, parent) {
 }
 
 window.onload = async () => {
+    await applyRulesToInputs();
+    await applyCreateGameSettings();
     document.getElementById("error").style.display = "none";
     await loadGame();
 };
-document.getElementById("require-solvable").addEventListener('change', async () => {
-    await loadGame();
-});
 document.getElementById("create-button").addEventListener('click', async () => {
+    saveCreateGameSettings();
+    saveGameRules();
     await loadGame();
 });

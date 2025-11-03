@@ -1,0 +1,49 @@
+<div th:fragment="game-rules(creatingGame)" class="game-rules">
+    <details>
+        <summary>Game Rules</summary>
+        <div class="rule-section">
+            <h4 class="rule-title">Allowed Operations</h4>
+            <div class="rule-input rule-input-checkboxes">
+                <div class="rule-checkbox-column">
+                    <div class="rule-checkbox"><input type="checkbox" value="ADDITION" id="addition" checked><label for="addition">Addition</label></div>
+                    <div class="rule-checkbox"><input type="checkbox" value="SUBTRACTION" id="subtraction" checked><label for="subtraction">Subtraction</label></div>
+                    <div class="rule-checkbox"><input type="checkbox" value="MULTIPLICATION" id="multiplication" checked><label for="multiplication">Multiplication</label></div>
+                    <div class="rule-checkbox"><input type="checkbox" value="DIVISION" id="division" checked><label for="division">Division</label></div>
+                </div>
+                <div class="rule-checkbox-column">
+                    <div class="rule-checkbox"><input type="checkbox" value="EXPONENTIATION" id="exponentiation"><label for="exponentiation">Exponentiation</label></div>
+                    <div class="rule-checkbox"><input type="checkbox" value="LOGARITHM" id="logarithm"><label for="logarithm">Logarithm</label></div>
+                    <div class="rule-checkbox"><input type="checkbox" value="ROOT" id="root"><label for="root">nth Root</label></div>
+                </div>
+            </div>
+        </div>
+        <div class="rule-section">
+            <h4 class="rule-title">Target Value</h4>
+            <div class="rule-input">
+                <input type="number" name="target-value" id="target-value" class="rule-number-input" required min="0" value="24">
+            </div>
+        </div>
+        <div class="rule-section" th:if="${creatingGame}">
+            <h4 class="rule-title">Solvability</h4>
+            <div class="rule-input">
+                <div class="solvability-prompt">
+                    <input class="switch" type="checkbox" value="" id="require-solvable" role="switch" switch checked>
+                    <label for="require-solvable">
+                        Require game to be solvable
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="rule-section" th:if="${creatingGame}">
+            <h4 class="rule-title">Range of Numbers</h4>
+            <div class="rule-input">
+                <label for="minimum-value">Minimum</label>
+                <input type="number" name="minimum-value" id="minimum-value" class="rule-number-input" required min="1" value="0">
+            </div>
+            <div class="rule-input">
+                <label for="maximum-value">Maximum</label>
+                <input type="number" name="maximum-value" id="maximum-value" class="rule-number-input" required min="1" value="13">
+            </div>
+        </div>
+    </details>
+</div>

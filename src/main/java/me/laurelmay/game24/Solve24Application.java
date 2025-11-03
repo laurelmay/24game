@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Solve24Application {
 
-	public static void main(String[] args) {
-		SpringApplication.run(Solve24Application.class, args);
-	}
+  static void main(String[] args) {
+    SpringApplication.run(Solve24Application.class, args);
+  }
 
 }

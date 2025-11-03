@@ -1,9 +1,16 @@
+import {loadGameRules, saveGameRules} from "./game-rules.js";
+import {createMathmlElement} from "./mathml-support.js";
+
 export async function loadSolution(numbers, showErrors) {
+    const rules = loadGameRules();
     const signal = AbortSignal.timeout(2500);
     await fetch('/api/solve-24', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ numbers }),
+        body: JSON.stringify({
+            numbers,
+            gameRuleSettings: rules,
+        }),
         signal,
     })
         .then(res => {
@@ -84,9 +91,9 @@ function createListItem(solution) {
 }
 
 function convertToMathMl(solution) {
-    const math = document.createElement('math');
+    const math = createMathmlElement('math');
     math.style.display = 'block';
-    const row = document.createElement('mrow');
+    const row = createMathmlElement('mrow');
     math.replaceChildren(row);
     row.replaceChildren(...convertExpression({
         type: 'expression',
@@ -101,28 +108,29 @@ function convertToMathMl(solution) {
  * @param items {Array} tst
  */
 function convertExpression(expression, items) {
-    const open = document.createElement('mo');
-    open.textContent = '(';
-    items.push(open);
-
-    convertOperand(expression.operation.lhs, items);
-
-    const op = document.createElement('mo');
-    op.textContent = replaceOperator(expression.operation.operator);
-    items.push(op);
-
-    convertOperand(expression.operation.rhs, items);
-
-    const close = document.createElement('mo');
-    close.textContent = ')';
-    items.push(close)
+    switch (expression.operation.operator) {
+        case '+':
+        case '-':
+        case '*':
+            return convertInfixExpression(expression, items);
+        case '/':
+            return convertDivisionExpression(expression, items);
+        case '^':
+            return convertExponentiationExpression(expression, items);
+        case '√':
+            return convertRootExpression(expression, items);
+        case 'log':
+            return convertLogarithmExpression(expression, items);
+        default:
+            console.error(`Unknown operator: ${expression.operation.operator}`);
+    }
     return items;
 }
 
 function convertOperand(operand, items) {
     switch (operand.type) {
         case 'number':
-            const mn = document.createElement('mn');
+            const mn = createMathmlElement('mn');
             mn.textContent = operand.value;
             items.push(mn);
             break;
@@ -130,17 +138,88 @@ function convertOperand(operand, items) {
             convertExpression(operand, items);
             break;
     }
+}
+
+function convertInfixExpression(expression, items) {
+    const open = createMathmlElement('mo');
+    open.textContent = '(';
+    items.push(open);
+
+    convertOperand(expression.operation.lhs, items);
+
+    const op = createMathmlElement('mo');
+    op.textContent = replaceInfixOperator(expression.operation.operator);
+    items.push(op);
+
+    convertOperand(expression.operation.rhs, items);
+
+    const close = createMathmlElement('mo');
+    close.textContent = ')';
+    items.push(close)
+    return items;
+}
+
+function convertDivisionExpression(expression, items) {
+    return simpleExpressionHelper('mfrac', expression, items);
+}
+
+function convertRootExpression(expression, items) {
+    return simpleExpressionHelper('mroot', expression, items);
+}
+
+function convertExponentiationExpression(expression, items) {
+    return simpleExpressionHelper('msup', expression, items);
+}
+
+function simpleExpressionHelper(outerElement, expression, items) {
+    const exponent = createMathmlElement(outerElement);
+
+    const lhs = createMathmlElement('mrow');
+    const lhsChildren = [];
+    convertOperand(expression.operation.lhs, lhsChildren);
+    lhs.replaceChildren(...lhsChildren);
+
+    const rhs = createMathmlElement('mrow');
+    const rhsChildren = [];
+    convertOperand(expression.operation.rhs, rhsChildren);
+    rhs.replaceChildren(...rhsChildren);
+
+    exponent.replaceChildren(lhs, rhs);
+    items.push(exponent);
+    return items;
 
 }
 
-function replaceOperator(operator) {
+function convertLogarithmExpression(expression, items) {
+    const outer = createMathmlElement('mrow');
+    const logarithm = createMathmlElement('msub');
+
+    const log = createMathmlElement('mo');
+    log.textContent = 'log';
+
+    const base = createMathmlElement('mrow');
+    const baseChildren = [];
+    convertOperand(expression.operation.lhs, baseChildren);
+    base.replaceChildren(...baseChildren);
+
+    logarithm.replaceChildren(log, base);
+
+    const antiLogarithm = createMathmlElement('mrow');
+    const antiLogarithmChildren = [];
+    convertOperand(expression.operation.rhs, antiLogarithmChildren);
+    antiLogarithm.replaceChildren(...antiLogarithmChildren);
+
+    outer.replaceChildren(logarithm, antiLogarithm);
+    items.push(outer);
+    return items;
+}
+
+function replaceInfixOperator(operator) {
     switch (operator) {
         case '+':
             return '+';
         case '*':
             return '×'
-        case '/':
-            return '÷'
         case '-':
             return '-';
     }
@@ -150,7 +229,7 @@ function showSingleItem(show) {
     for (const id of ["solutions", "error", "no-result"]) {
         const element = document.getElementById(id);
         if (element) {
-            element.style.display = (show === id ) ? "block" : "none";
+            element.style.display = (show === id) ? "block" : "none";
         }
     }
 }
