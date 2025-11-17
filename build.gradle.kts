@@ -1,11 +1,11 @@
 plugins {
 	java
-	id("org.springframework.boot") version "4.0.0-RC1"
+	id("org.springframework.boot") version "4.0.0-RC2"
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "me.laurelmay"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.3"
 description = "game24"
 
 java {

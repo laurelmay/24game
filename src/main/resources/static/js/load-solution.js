@@ -160,18 +160,24 @@ function convertInfixExpression(expression, items) {
 }
 
 function convertDivisionExpression(expression, items) {
-    return simpleExpressionHelper('mfrac', expression, items);
+    return simpleExpressionHelper('mfrac', true, expression, items);
 }
 
 function convertRootExpression(expression, items) {
-    return simpleExpressionHelper('mroot', expression, items);
+    return simpleExpressionHelper('mroot', true, expression, items);
 }
 
 function convertExponentiationExpression(expression, items) {
-    return simpleExpressionHelper('msup', expression, items);
+    return simpleExpressionHelper('msup', true, expression, items);
 }
 
-function simpleExpressionHelper(outerElement, expression, items) {
+function simpleExpressionHelper(outerElement, withParentheses, expression, items) {
+    if (withParentheses) {
+        const open = createMathmlElement('mo');
+        open.textContent = '(';
+        items.push(open);
+    }
+
     const exponent = createMathmlElement(outerElement);
 
     const lhs = createMathmlElement('mrow');
@@ -186,6 +192,13 @@ function simpleExpressionHelper(outerElement, expression, items) {
 
     exponent.replaceChildren(lhs, rhs);
     items.push(exponent);
+
+    if (withParentheses) {
+        const open = createMathmlElement('mo');
+        open.textContent = ')';
+        items.push(open);
+    }
+
     return items;
 
 }
