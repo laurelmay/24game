@@ -1,9 +1,10 @@
 import {loadGameRules, saveGameRules} from "./game-rules.js";
 import {createMathmlElement} from "./mathml-support.js";
+import {showSingleItem} from "./util.js";
 
-export async function loadSolution(numbers, showErrors) {
+export async function loadSolution(numbers, showErrors, signal) {
     const rules = loadGameRules();
-    const signal = AbortSignal.timeout(2500);
+    const requestSignal = signal ?? AbortSignal.timeout(2500);
     await fetch('/api/solve-24', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -11,7 +12,7 @@ export async function loadSolution(numbers, showErrors) {
             numbers,
             gameRuleSettings: rules,
         }),
-        signal,
+        requestSignal,
     })
         .then(res => {
             if (res.ok) {
@@ -33,17 +34,17 @@ export async function loadSolution(numbers, showErrors) {
             } catch {
                 document.getElementById("error-details").textContent = err.message;
             }
-            document.getElementById("solutions").style.display = "none";
-            console.log(err)
+            showSingleItem("error");
+            throw err;
         });
 }
 
 function createSolutionList(solutions) {
-    const parent = document.getElementById('solutions');
     if (!solutions || solutions.length < 1) {
         showSingleItem("no-result");
         return;
     }
+    const parent = document.getElementById('solutions');
     const count = document.createElement('p');
 
     const solutionsList = document.createElement('div');
@@ -235,14 +236,5 @@ function replaceInfixOperator(operator) {
             return '×'
         case '-':
             return '-';
-    }
-}
-
-function showSingleItem(show) {
-    for (const id of ["solutions", "error", "no-result"]) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.style.display = (show === id) ? "block" : "none";
-        }
     }
 }

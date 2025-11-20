@@ -1,6 +1,8 @@
 package me.laurelmay.game24;
 
 import me.laurelmay.game24.service.util.SortedListKeyGenerator;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Configuration
 @EnableCaching
+@ConfigurationPropertiesScan
 public class Solve24Configuration {
 
   @Bean
@@ -25,6 +28,4 @@ public class Solve24Configuration {
   SortedListKeyGenerator sortedListKeyGenerator() {
     return new SortedListKeyGenerator();
   }
-
-
 }

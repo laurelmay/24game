@@ -35,7 +35,6 @@ export function saveGameRules() {
 export function applyRulesToInputs() {
     const rules = loadGameRules();
     for (const element of document.querySelectorAll(`.rule-checkbox > input[type="checkbox"]`)) {
-        console.log(element.value);
         element.checked = rules.allowedOperations.includes(element.value);
     }
     document.getElementById("target-value").value = rules.targetValue;

@@ -15,11 +15,8 @@
 <div class="container">
     <header th:replace="~{fragments/navbar :: navbar}"></header>
     <main>
-        <p>Provide four numbers to find ways that they add, subtract, multiply, and divide to equal
-            <math>
-                <mn>24</mn>
-            </math>
-            :
+        <p>Provide four numbers to find combinations of operations that result in
+            <math><mn>24</mn></math>:
         </p>
         <form id="form">
             <div class="mb-2">
@@ -37,7 +34,7 @@
             <div class="alert alert-warning" id="no-result">
                 <p>No solution was found for this input.</p>
             </div>
-            <div class="alert alert-danger" id="error">
+            <div class="alert alert-error" id="error">
                 <p>An error occurred.</p>
                 <p id="error-details"></p>
             </div>

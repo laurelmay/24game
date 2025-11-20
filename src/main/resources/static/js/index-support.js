@@ -6,15 +6,26 @@ import {
     saveCreateGameSettings,
     saveGameRules
 } from "./game-rules.js";
+import {showSingleItem} from "./util.js";
 
 let isSolved = false;
+let requestCancellation = {
+    abortController: undefined,
+    timeoutHandle: undefined,
+};
+
+class MultipleRequestError extends Error {
+    constructor(message) {
+        super(message);
+    }
+}
 
 export async function loadGame() {
     isSolved = false;
     const rules = loadGameRules();
     const solveConfig = loadCreateGameSettings();
+    const signal = getCancellationSignal();
     document.getElementById("solutions").style.display = "none";
-    const signal = AbortSignal.timeout(2500);
     await fetch(`/api/random-game`, {
         method: 'POST',
         headers: {
@@ -27,13 +38,27 @@ export async function loadGame() {
         }),
         signal,
     })
+        .then(res => {
+            if (res.ok) {
+                return res;
+            }
+            const e = new Error(res.statusText);
+            e.data = res;
+            throw e;
+        })
         .then(response => response.json())
         .then((game) => showGameDetails(game))
-        .catch((error) => {
+        .catch(async (error) => {
             console.error(error);
-            document.getElementById("error").style.display = "block";
-            document.getElementById("error-details").innerText = error.message;
-            document.getElementById("solutions").style.display = "none";
+            if (!(error instanceof MultipleRequestError)) {
+                try {
+                    const errData = await error.data.json();
+                    document.getElementById("error-details").textContent = errData.message;
+                } catch {
+                    document.getElementById("error-details").textContent = error.message;
+                }
+                showSingleItem("error");
+            }
         });
 }
 
@@ -53,8 +78,10 @@ function showGameDetails(game) {
         if (isSolved) {
             return;
         }
-        loadSolution(numbers, true).then(() => {
+        loadSolution(numbers, true, getCancellationSignal()).then(() => {
             isSolved = true;
+        }).catch(() => {
+            isSolved = false;
         });
     };
 }
@@ -65,12 +92,24 @@ function createNumberElement(value, parent) {
     parent.appendChild(numberElement);
 }
 
+function getCancellationSignal() {
+    if (requestCancellation.abortController) {
+        requestCancellation.abortController.abort(new MultipleRequestError('Additional request detected, cancelling previous request'));
+        clearTimeout(requestCancellation.timeoutHandle);
+    }
+    const abortController = new AbortController();
+    requestCancellation.timeoutHandle = setTimeout(() => abortController.abort(new Error('Timeout exceeded')), 2500);
+    requestCancellation = { abortController, timeoutHandle: requestCancellation.timeoutHandle };
+    return abortController.signal;
+}
+
 window.onload = async () => {
     await applyRulesToInputs();
     await applyCreateGameSettings();
     document.getElementById("error").style.display = "none";
     await loadGame();
 };
+
 document.getElementById("create-button").addEventListener('click', async () => {
     saveCreateGameSettings();
     saveGameRules();

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.laurelmay"
-version = "0.0.3"
+version = "0.0.4"
 description = "game24"
 
 java {

@@ -1,6 +1,7 @@
 package me.laurelmay.game24.service;
 
 import me.laurelmay.game24.Constants;
+import me.laurelmay.game24.Game24ConfigurationProperties;
 import me.laurelmay.game24.rest.dto.Solvability;
 import me.laurelmay.game24.service.operation.Operation;
 import org.slf4j.Logger;
@@ -22,11 +23,13 @@ public class GameCreationService {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private final SolverService solverService;
+  private final Game24ConfigurationProperties game24ConfigurationProperties;
   private final ThreadLocal<RandomGenerator> randomGenerator;
 
   @Autowired
-  public GameCreationService(SolverService solverService) {
+  public GameCreationService(SolverService solverService, Game24ConfigurationProperties game24ConfigurationProperties) {
     this.solverService = solverService;
+    this.game24ConfigurationProperties = game24ConfigurationProperties;
     RandomGeneratorFactory<RandomGenerator> randomGeneratorFactory = RandomGeneratorFactory.all()
                                                                        .filter(
                                                                          rgf -> !rgf.name().equals("SecureRandom"))
@@ -45,14 +48,17 @@ public class GameCreationService {
                                               Set<Class<? extends Operation>> allowedOperations) {
     List<Integer> numbers;
     Solvability actualSolvability;
-    do {
+    for (int i = 0; i < game24ConfigurationProperties.maximumGameGenerationAttempts(); i++) {
       numbers = this.generateNumbers(minimumValue, maximumValue);
       actualSolvability = solverService.isSolvable(numbers, targetValue, allowedOperations)
                           ? Solvability.SOLVABLE
                           : Solvability.UNSOLVABLE;
-    } while (desiredSolvability != Solvability.UNKNOWN && desiredSolvability != actualSolvability);
+      if (desiredSolvability == Solvability.UNKNOWN || desiredSolvability == actualSolvability) {
+        return new GameConfiguration(actualSolvability, numbers);
+      }
+    }
 
-    return new GameConfiguration(actualSolvability, numbers);
+    throw new RuntimeException("Failed to generate a game within maximum attempts");
   }
 
   private List<Integer> generateNumbers(int minimumValue, int maximumValue) {

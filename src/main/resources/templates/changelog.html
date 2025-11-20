@@ -17,6 +17,21 @@
     <main class="flex-shrink-0 mb-2">
         <h1>Changelog</h1>
         <div class="changelog-release">
+            <h2>Version 0.0.4 &mdash; 2025-11-19</h2>
+            <h3>Improvements</h3>
+            <ul>
+                <li>Game generation now tries a set limit of random number sets, ensuring failures are reported quickly</li>
+                <li>Improved performance by caching the results of some operations</li>
+            </ul>
+            <h3>Bug Fixes</h3>
+            <ul>
+                <li>In some cases, errors would not be shown correctly</li>
+                <li>The Solve button couldn't be clicked again when there was an error fetching the solution</li>
+                <li>Multiple requests could be made concurrently</li>
+                <li>It was possible for solutions to appear for a previous game to appear after a new game was generated</li>
+            </ul>
+        </div>
+        <div class="changelog-release">
             <h2>Version 0.0.3 &mdash; 2025-11-17</h2>
             <h3>Improvements</h3>
             <ul>
