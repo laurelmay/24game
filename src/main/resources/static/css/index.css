@@ -12,14 +12,17 @@
     }
 
     math {
-        font-family: "Latin Modern Math", math;
-        font-size: 1.75em;
+        font-family: "STIX Two Math", math;
+        font-size: 2.5em;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         width: 60%;
         max-width: 10em;
+        @media screen and (max-width: 768px) {
+            width: 90%;
+        }
     }
 }
 

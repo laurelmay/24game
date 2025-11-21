@@ -1,8 +1,4 @@
 @font-face {
-    font-family: "Latin Modern Math";
-    src: url('/fonts/latinmodern-math.otf');
-}
-@font-face {
     font-family: "STIX Two Math";
     src: url('/fonts/STIXTwoMath-Regular.ttf');
 }
@@ -324,7 +320,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 math {
-    font-family: "STIX Two Math", "Latin Modern Math", math;
+    font-family: "STIX Two Math", math;
 }
 
 .inline-math {
