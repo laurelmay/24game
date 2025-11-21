@@ -31,13 +31,18 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Build with Gradle Wrapper
         run: ./gradlew build
+      - name: Get version information
+        run: |
+          echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
       - name: Build image
         id: build-image
         uses: redhat-actions/buildah-build@v2
         with:
           image: game24
-          tags: latest ${{ github.sha }}
+          tags: latest ${{ github.sha }} ${{ env.VERSION }}
           archs: amd64, arm64
+          build-args: |
+            VERSION=${{ env.VERSION }}
           context: .
           containerfiles: |
             Dockerfile

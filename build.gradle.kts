@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.laurelmay"
-version = "0.0.4"
+version = rootProject.file("version.txt").readText(Charsets.UTF_8).trim()
 description = "game24"
 
 java {
