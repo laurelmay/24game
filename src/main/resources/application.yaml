@@ -1,11 +1,12 @@
 spring:
   application:
     name: game24
+  web:
+    error:
+      include-stacktrace: never
 
 server:
   address: 0.0.0.0
-  error:
-    include-stacktrace: never
 
 management:
   server:
