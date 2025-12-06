@@ -1,7 +1,7 @@
 apiVersion: v2
-appVersion: 0.0.1
+appVersion: 0.0.6
 name: game24
-version: '0.0.1'
+version: '0.0.6'
 description: >-
   A deployment of the game24 application (front-end and backend)
 type: application

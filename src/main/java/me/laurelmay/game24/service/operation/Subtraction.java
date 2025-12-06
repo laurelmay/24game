@@ -2,7 +2,7 @@ package me.laurelmay.game24.service.operation;
 
 public class Subtraction extends Operation {
   public Subtraction(Operand lhs, Operand rhs) {
-    super("-", true, lhs, rhs);
+    super("-", false, lhs, rhs);
   }
 
   public int evaluate() {
