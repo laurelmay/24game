@@ -1,0 +1,14 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text {
+      font-family: system-ui, "Segoe UI", "Adwaita Sans", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      font-weight: bold;
+    }
+  </style>
+  <rect width="256" height="256" rx="32" fill="#007bff" />
+  <text x="128" y="100" text-anchor="middle" dominant-baseline="central" font-size="192" fill="white">24</text>
+  <text x="48" y="206" text-anchor="middle" dominant-baseline="central" font-size="72" fill="white">+</text>
+  <text x="101" y="206" text-anchor="middle" dominant-baseline="central" font-size="72" fill="white">−</text>
+  <text x="154" y="206" text-anchor="middle" dominant-baseline="central" font-size="72" fill="white">×</text>
+  <text x="208" y="206" text-anchor="middle" dominant-baseline="central" font-size="72" fill="white">÷</text>
+</svg>

@@ -1,5 +1,8 @@
 <header th:fragment="navbar">
-    <a class="main-link" href="/">24 Game</a>
+    <a class="main-link" href="/">
+        <img src="/img/logo.svg" alt="24" class="logo">
+        <span>Game</span>
+    </a>
     <nav>
         <ul th:with="pages=${ { {'Home', '/'}, {'Solve', '/solve'} } }">
             <li th:each="page : ${pages}">

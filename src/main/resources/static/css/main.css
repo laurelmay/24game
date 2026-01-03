@@ -67,6 +67,8 @@ header {
         text-decoration: none;
         color: var(--text-color);
         font-size: 1.75em;
+        display: inline-flex;
+        align-items: center;
     }
 }
 
@@ -85,7 +87,6 @@ nav > ul {
         padding-right: 1em;
         padding-left: 1em;
     }
-
 }
 
 .nav-link {
@@ -99,7 +100,11 @@ nav > ul {
     &:visited {
         color: inherit;
     }
+}
 
+.logo {
+    height: 1em;
+    margin-right: 0.25em;
 }
 
 main {
