@@ -13,7 +13,7 @@
       ansible.builtin.apt_repository:
         repo: >-
           deb [signed-by=/etc/apt/trusted.gpg.d/adoptium.gpg]
-          https://packages.adoptium.net/deb {{ ansible_distribution_release }} main
+          https://packages.adoptium.net/deb {{ ansible_facts["distribution_release"] }} main
     - name: Install Java
       ansible.builtin.apt:
         name: temurin-25-jre
@@ -30,7 +30,7 @@
         repo: >-
           deb [signed-by=/etc/apt/trusted.gpg.d/nginx-archive-keyring.gpg]
           http://nginx.org/packages/mainline/ubuntu/
-          {{ ansible_distribution_release }} nginx
+          {{ ansible_facts["distribution_release"] }} nginx
         state: present
     - name: Install Nginx
       ansible.builtin.apt:
