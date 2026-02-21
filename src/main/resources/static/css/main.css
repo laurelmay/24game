@@ -19,6 +19,14 @@
     --secondary-background-color: #e9ecef;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: #ddd;
+        --background-color: #212529;
+        --secondary-background-color: #343a40;
+    }
+}
+
 *,
 ::before,
 ::after {
@@ -30,7 +38,8 @@ html {
 }
 
 body {
-    color: #222;
+    background-color: var(--background-color);
+    color: var(--text-color);
     font-size: 16px;
     line-height: 1.5em;
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -160,6 +169,8 @@ input[type=number] {
     margin-top: 0.25em;
     margin-bottom: 0.25em;
     font-size: 1em;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 input[type=number]::-webkit-outer-spin-button,
