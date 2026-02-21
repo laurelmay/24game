@@ -6,13 +6,19 @@ public class Division extends Operation {
   }
 
   public int evaluate() {
-    int lhs = this.lhs.value();
-    int rhs = this.rhs.value();
+    String errorMessage = String.format("Division evaluation failed: [lhs=%s, rhs=%s]", lhs, rhs);
 
-    if (rhs == 0 || lhs % rhs != 0) {
-      throw new IllegalArgumentException("Division evaluation failed: lhs " + lhs + ", rhs " + rhs);
+    int numerator = lhs.value();
+    int denominator = rhs.value();
+
+    if (denominator == 0 || numerator % denominator != 0) {
+      throw new IllegalArgumentException(errorMessage);
     }
 
-    return lhs / rhs;
+    try {
+      return Math.divideExact(numerator, denominator);
+    } catch (ArithmeticException e) {
+      throw new IllegalArgumentException(errorMessage, e);
+    }
   }
 }

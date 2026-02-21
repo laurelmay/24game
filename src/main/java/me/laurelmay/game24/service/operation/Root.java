@@ -12,12 +12,17 @@ public class Root extends Operation {
   }
 
   private static int root(int radicand, int degree) {
+    String errorMessage = String.format("Root evaluation failed: [radicand=%d, degree=%d]", radicand, degree);
     if (radicand <= 0 || degree <= 0) {
-      throw new IllegalArgumentException("Root evaluation failed: [radicand=" + radicand + ", degree=" + degree + "]");
+      throw new IllegalArgumentException(errorMessage);
     }
     int root = (int) Math.pow(radicand, 1.0 / degree);
-    if (Math.powExact(root, degree) != radicand) {
-      throw new IllegalArgumentException("Root evaluation failed: [radicand=" + radicand + ", degree=" + degree + "]");
+    try {
+      if (Math.powExact(root, degree) != radicand) {
+        throw new IllegalArgumentException(errorMessage);
+      }
+    } catch (ArithmeticException e) {
+      throw new IllegalArgumentException(errorMessage, e);
     }
     return root;
   }

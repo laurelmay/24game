@@ -12,14 +12,17 @@ public class Logarithm extends Operation {
   }
 
   private static int log(int base, int antiLogarithm) {
+    String errorMessage = String.format("log evaluation failed: [base=%d, antiLogarithm=%d]", base, antiLogarithm);
     if (base <= 1 || antiLogarithm <= 0 || base > antiLogarithm) {
-      throw new IllegalArgumentException(
-        "log evaluation failed: [base=" + base + ", antiLogarithm=" + antiLogarithm + "]");
+      throw new IllegalArgumentException(errorMessage);
     }
     int logarithm = (int) (Math.log(antiLogarithm) / Math.log(base));
-    if (Math.powExact(base, logarithm) != antiLogarithm) {
-      throw new IllegalArgumentException(
-        "log evaluation failed: [base=" + base + ", antiLogarithm=" + antiLogarithm + "]");
+    try {
+      if (Math.powExact(base, logarithm) != antiLogarithm) {
+        throw new IllegalArgumentException(errorMessage);
+      }
+    } catch (ArithmeticException e) {
+      throw new IllegalArgumentException(errorMessage, e);
     }
     return logarithm;
   }

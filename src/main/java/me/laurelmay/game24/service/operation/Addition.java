@@ -6,6 +6,10 @@ public class Addition extends Operation {
   }
 
   public int evaluate() {
-    return lhs.value() + rhs.value();
+    try {
+      return Math.addExact(lhs.value(), rhs.value());
+    } catch (ArithmeticException e) {
+      throw new IllegalArgumentException(String.format("Addition evaluation failed: [lhs=%s, rhs=%s]", lhs, rhs), e);
+    }
   }
 }

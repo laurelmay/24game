@@ -6,6 +6,11 @@ public class Multiplication extends Operation {
   }
 
   public int evaluate() {
-    return lhs.value() * rhs.value();
+    try {
+      return Math.multiplyExact(lhs.value(), rhs.value());
+    } catch (ArithmeticException e) {
+      String errorMessage = String.format("Multiplication evaluation failed: [lhs=%s, rhs=%s]", lhs, rhs);
+      throw new IllegalArgumentException(errorMessage, e);
+    }
   }
 }
