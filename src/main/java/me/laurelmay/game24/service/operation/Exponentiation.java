@@ -8,13 +8,16 @@ public class Exponentiation extends Operation {
 
   @Override
   public int evaluate() {
-    String errorMessage = String.format("Exponentiation evaluation failed: [lhs=%s, rhs=%s]", lhs, rhs);
-    if (this.lhs.value() < 0 || this.rhs.value() < 0) {
+    int base = this.lhs.value();
+    int power = this.rhs.value();
+    if (base < 0 || power < 0) {
+      String errorMessage = String.format("Exponentiation evaluation failed: [lhs=%s, rhs=%s]", lhs, rhs);
       throw new IllegalArgumentException(errorMessage);
     }
     try {
-      return Math.powExact(lhs.value(), rhs.value());
+      return Math.powExact(base, power);
     } catch (ArithmeticException ae) {
+      String errorMessage = String.format("Exponentiation evaluation failed: [lhs=%s, rhs=%s]", lhs, rhs);
       throw new IllegalArgumentException(errorMessage, ae);
     }
   }

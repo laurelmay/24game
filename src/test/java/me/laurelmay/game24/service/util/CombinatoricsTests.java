@@ -12,7 +12,7 @@ public class CombinatoricsTests {
 
   @Test
   public void testCartesianPower() {
-    Set<List<Integer>> combinations = Combinatorics.cartesianPower(Set.of(1, 2, 3), 2);
+    List<List<Integer>> combinations = Combinatorics.cartesianPower(Set.of(1, 2, 3), 2);
     assertEquals(9, combinations.size());
     List<List<Integer>> expected = List.of(List.of(1, 1), List.of(1, 2), List.of(1, 3), List.of(2, 1), List.of(2, 2),
       List.of(2, 3), List.of(3, 1), List.of(3, 2), List.of(3, 3));
@@ -22,7 +22,7 @@ public class CombinatoricsTests {
 
   @Test
   public void testPermutations() {
-    Set<List<Integer>> combinations = Combinatorics.permutations(List.of(1, 2, 3));
+    List<List<Integer>> combinations = Combinatorics.permutations(List.of(1, 2, 3));
     assertEquals(6, combinations.size());
     List<List<Integer>> expected = List.of(List.of(1, 2, 3), List.of(1, 3, 2), List.of(2, 1, 3), List.of(2, 3, 1),
       List.of(3, 1, 2), List.of(3, 2, 1));

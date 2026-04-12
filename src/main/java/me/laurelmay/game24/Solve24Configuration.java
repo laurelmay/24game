@@ -20,7 +20,7 @@ public class Solve24Configuration {
   @Bean
   CacheManager cacheManager() {
     SimpleCacheManager cacheManager = new SimpleCacheManager();
-    cacheManager.setCaches(List.of(new ConcurrentMapCache("solutions")));
+    cacheManager.setCaches(List.of(new ConcurrentMapCache("solutions"), new ConcurrentMapCache("solvability")));
     return cacheManager;
   }
 

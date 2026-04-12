@@ -1,5 +1,7 @@
 package me.laurelmay.game24.service;
 
+import me.laurelmay.game24.service.exception.WrappedNoSuchMethodException;
+import me.laurelmay.game24.service.operation.Addition;
 import me.laurelmay.game24.service.operation.Operand;
 import me.laurelmay.game24.service.operation.Operation;
 import me.laurelmay.game24.service.util.Combinatorics;
@@ -12,7 +14,9 @@ import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -23,19 +27,23 @@ import java.util.stream.Stream;
 public class SolverService {
   private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+  private final Map<Set<Class<? extends Operation>>, Collection<List<Class<? extends Operation>>>> operationOrderings = new HashMap<>();
+  private final Map<Class<? extends Operation>, Constructor<? extends Operation>> operationConstructors = new HashMap<>();
+
   @Cacheable(value = "solutions", keyGenerator = "sortedListKeyGenerator")
   public Set<Operation> solve(List<Integer> numbers, int targetValue, Set<Class<? extends Operation>> allowedOperations) {
-    List<Operation> candidateSolutions = this.findCandidateSolutions(numbers, allowedOperations);
+    Stream<Operation> candidateSolutions = this.findCandidateSolutions(numbers, allowedOperations);
 
-    return candidateSolutions.parallelStream()
+    return candidateSolutions.parallel()
              .filter(s -> isSolution(s, targetValue))
              .collect(Collectors.toUnmodifiableSet());
   }
 
+  @Cacheable(value = "solvability", keyGenerator = "sortedListKeyGenerator")
   public boolean isSolvable(List<Integer> numbers, int targetValue, Set<Class<? extends Operation>> allowedOperations) {
-    List<Operation> candidateSolutions = this.findCandidateSolutions(numbers, allowedOperations);
+    Stream<Operation> candidateSolutions = this.findCandidateSolutions(numbers, allowedOperations);
 
-    return candidateSolutions.parallelStream().anyMatch(s -> isSolution(s, targetValue));
+    return candidateSolutions.parallel().anyMatch(s -> isSolution(s, targetValue));
   }
 
   public boolean isSolution(Operation candidate, int targetValue) {
@@ -47,12 +55,16 @@ public class SolverService {
     }
   }
 
-  private List<Operation> findCandidateSolutions(List<Integer> numbers, Set<Class<? extends Operation>> allowedOperations) {
+  private Collection<List<Class<? extends Operation>>> getOperationOrderings(Set<Class<? extends Operation>> allowedOperations) {
+    this.operationOrderings.computeIfAbsent(allowedOperations, k -> Combinatorics.cartesianPower(allowedOperations, 3));
+    return this.operationOrderings.get(allowedOperations);
+  }
+
+  private Stream<Operation> findCandidateSolutions(List<Integer> numbers, Set<Class<? extends Operation>> allowedOperations) {
     Collection<List<Integer>> numberPermutations = Combinatorics.permutations(numbers);
-    Collection<List<Class<? extends Operation>>> operationOrderings = Combinatorics.cartesianPower(allowedOperations,
-      3);
+    Collection<List<Class<? extends Operation>>> operationOrderings = getOperationOrderings(allowedOperations);
     return numberPermutations.parallelStream()
-             .flatMap(s -> operationOrderings.parallelStream().flatMap(o -> toOperations(s, o).stream())).toList();
+             .flatMap(s -> operationOrderings.stream().flatMap(o -> toOperations(s, o).stream()));
   }
 
   private List<Operation> toOperations(List<Integer> numbers, List<Class<? extends Operation>> operations) {
@@ -60,7 +72,8 @@ public class SolverService {
         toLeftToRightOperations(numbers, operations).stream(),
         toLeftToRightOperationsGroupingSecondAndThird(numbers, operations).stream(),
         toOuterPairOperations(numbers, operations).stream(),
-        toRightToLeftOperations(numbers, operations).stream()
+        toRightToLeftOperations(numbers, operations).stream(),
+        toRightToLeftOperationGroupingSecondAndThird(numbers, operations).stream()
       )
              .flatMap(Function.identity())
              .toList();
@@ -75,7 +88,7 @@ public class SolverService {
         findConstructor(operations.get(2)).newInstance(new Operand.Number(numbers.get(2)),
           new Operand.Number(numbers.get(3))));
       return Optional.of(findConstructor(operations.get(1)).newInstance(lhs, rhs));
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+    } catch (WrappedNoSuchMethodException | IllegalAccessException | InstantiationException |
              InvocationTargetException e) {
       return Optional.empty();
     }
@@ -89,7 +102,7 @@ public class SolverService {
       Operand b = new Operand.Expression(
         findConstructor(operations.get(1)).newInstance(a, new Operand.Number(numbers.get(2))));
       return Optional.of(findConstructor(operations.get(2)).newInstance(b, new Operand.Number(numbers.get(3))));
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+    } catch (WrappedNoSuchMethodException | IllegalAccessException | InstantiationException |
              InvocationTargetException e) {
       return Optional.empty();
     }
@@ -103,7 +116,7 @@ public class SolverService {
       Operand left = new Operand.Expression(
         findConstructor(operations.get(0)).newInstance(new Operand.Number(numbers.get(0)), inner));
       return Optional.of(findConstructor(operations.get(2)).newInstance(left, new Operand.Number(numbers.get(3))));
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+    } catch (WrappedNoSuchMethodException | IllegalAccessException | InstantiationException |
              InvocationTargetException e) {
       return Optional.empty();
     }
@@ -117,7 +130,7 @@ public class SolverService {
       Operand right = new Operand.Expression(
         findConstructor(operations.get(1)).newInstance(new Operand.Number(numbers.get(1)), inner));
       return Optional.of(findConstructor(operations.get(0)).newInstance(new Operand.Number(numbers.get(0)), right));
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+    } catch (WrappedNoSuchMethodException | IllegalAccessException | InstantiationException |
              InvocationTargetException e) {
       return Optional.empty();
     }
@@ -131,14 +144,21 @@ public class SolverService {
       Operand right = new Operand.Expression(
         findConstructor(operations.get(2)).newInstance(inner, new Operand.Number(numbers.get(3))));
       return Optional.of(findConstructor(operations.get(0)).newInstance(new Operand.Number(numbers.get(0)), right));
-    } catch (NoSuchMethodException | IllegalAccessException | InstantiationException |
+    } catch (WrappedNoSuchMethodException | IllegalAccessException | InstantiationException |
              InvocationTargetException e) {
       return Optional.empty();
     }
   }
 
-  private Constructor<? extends Operation> findConstructor(Class<? extends Operation> operation) throws NoSuchMethodException {
-    return operation.getConstructor(Operand.class, Operand.class);
+  private Constructor<? extends Operation> findConstructor(Class<? extends Operation> operation) {
+    operationConstructors.computeIfAbsent(operation, (op) -> {
+      try {
+        return op.getConstructor(Operand.class, Operand.class);
+      } catch (NoSuchMethodException e) {
+        throw new WrappedNoSuchMethodException(e);
+      }
+    });
+    return operationConstructors.get(operation);
   }
 
 }

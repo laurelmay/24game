@@ -6,4 +6,6 @@ RUN useradd --system --home-dir /opt/game24 --create-home --user-group game24
 USER game24
 WORKDIR /opt/game24
 COPY --chown=game24:game24 --chmod=0644 ./build/libs/game24-${VERSION}.jar game24.jar
+
+EXPOSE [8080/tcp,8081/tcp]
 ENTRYPOINT ["java", "-jar", "game24.jar"]

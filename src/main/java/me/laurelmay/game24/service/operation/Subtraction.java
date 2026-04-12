@@ -6,15 +6,14 @@ public class Subtraction extends Operation {
   }
 
   public int evaluate() {
-    String errorMessage = String.format("Subtraction evaluation failed [lhs=%s, rhs=%s]", lhs, rhs);
-
-    int difference = lhs.value() - rhs.value();
-    if (difference < 0) {
-      throw new IllegalArgumentException(errorMessage);
-    }
     try {
-      return Math.subtractExact(lhs.value(), rhs.value());
+      int difference = Math.subtractExact(lhs.value(), rhs.value());
+      if (difference < 0) {
+        throw new IllegalArgumentException(String.format("Subtraction evaluation failed [lhs=%s, rhs=%s]", lhs, rhs));
+      }
+      return difference;
     } catch (ArithmeticException e) {
+      String errorMessage = String.format("Subtraction evaluation failed [lhs=%s, rhs=%s]", lhs, rhs);
       throw new IllegalArgumentException(errorMessage, e);
     }
   }

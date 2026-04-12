@@ -11,18 +11,21 @@ public class Root extends Operation {
     this.cachedResult = CachedComputation.computedWith(() -> root(this.lhs.value(), this.rhs.value()));
   }
 
+  private static String createErrorMessage(int radicand, int degree) {
+    return String.format("Root evaluation failed: [radicand=%d, degree=%d]", radicand, degree);
+  }
+
   private static int root(int radicand, int degree) {
-    String errorMessage = String.format("Root evaluation failed: [radicand=%d, degree=%d]", radicand, degree);
     if (radicand <= 0 || degree <= 0) {
-      throw new IllegalArgumentException(errorMessage);
+      throw new IllegalArgumentException(createErrorMessage(radicand, degree));
     }
     int root = (int) Math.pow(radicand, 1.0 / degree);
     try {
       if (Math.powExact(root, degree) != radicand) {
-        throw new IllegalArgumentException(errorMessage);
+        throw new IllegalArgumentException(createErrorMessage(radicand, degree));
       }
     } catch (ArithmeticException e) {
-      throw new IllegalArgumentException(errorMessage, e);
+      throw new IllegalArgumentException(createErrorMessage(radicand, degree));
     }
     return root;
   }

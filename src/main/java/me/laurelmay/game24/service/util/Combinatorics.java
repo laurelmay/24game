@@ -11,58 +11,52 @@ public class Combinatorics {
   private Combinatorics() {
   }
 
-  public static <T> Set<List<T>> cartesianPower(Set<T> input, int power) {
-    return cartesianPowerHelper(input, power).stream().map(List::copyOf).collect(Collectors.toUnmodifiableSet());
+  public static <T> List<List<T>> cartesianPower(Set<T> input, int power) {
+    List<T> elements = List.copyOf(input);
+    int n = elements.size();
+
+    int total = 1;
+    for (int i = 0; i < power; i++) total *= n;
+
+    List<List<T>> result = new ArrayList<>(total);
+    for (int i = 0; i < total; i++) {
+      List<T> tuple = new ArrayList<>(power);
+      int index = i;
+      for (int p = 0; p < power; p++) {
+        tuple.add(elements.get(index % n));
+        index /= n;
+      }
+      result.add(List.copyOf(tuple));
+    }
+    return List.copyOf(result);
   }
 
-  private static <T> Set<List<T>> cartesianPowerHelper(Set<T> input, int power) {
-    Set<List<T>> result = new HashSet<>();
-    if (power == 0) {
-      result.add(new ArrayList<>());
-      return result;
-    }
-    if (power == 1) {
-      for (T element : input) {
-        result.add(List.of(element));
-      }
-      return result;
-    }
+  public static <T extends Comparable<T>> List<List<T>> permutations(List<T> input) {
+    List<T> current = new ArrayList<>(input);
+    Collections.sort(current);
 
-    Set<List<T>> previousPower = cartesianPower(input, power - 1);
-    for (List<T> tuple : previousPower) {
-      for (T element : input) {
-        List<T> newTuple = new ArrayList<>(tuple);
-        newTuple.add(element);
-        result.add(newTuple);
-      }
-    }
-    return result;
+    List<List<T>> result = new ArrayList<>(factorial(input.size()));
+    do {
+      result.add(List.copyOf(current));
+    } while (nextPermutation(current));
+
+    return List.copyOf(result);
   }
 
-  public static <T> Set<List<T>> permutations(List<T> input) {
-    Set<List<T>> result = new HashSet<>(factorial(input.size()));
-    permutationsHelper(new ArrayList<>(input), input.size(), result);
-    return result.stream().map(List::copyOf).collect(Collectors.toUnmodifiableSet());
-  }
+  private static <T extends Comparable<T>> boolean nextPermutation(List<T> list) {
+    int n = list.size();
 
-  /**
-   * Computes all permutations of a given list using Heap's algorithm.
-   */
-  private static <T> void permutationsHelper(List<T> input, int k, Set<List<T>> result) {
-    if (k == 1) {
-      result.add(new ArrayList<>(input));
-      return;
-    }
+    int i = n - 2;
+    while (i >= 0 && list.get(i).compareTo(list.get(i + 1)) >= 0) i--;
 
-    permutationsHelper(input, k - 1, result);
-    for (int i = 0; i < k - 1; i++) {
-      if (k % 2 == 0) {
-        Collections.swap(input, i, k - 1);
-      } else {
-        Collections.swap(input, 0, k - 1);
-      }
-      permutationsHelper(input, k - 1, result);
-    }
+    if (i < 0) return false;
+
+    int j = n - 1;
+    while (list.get(j).compareTo(list.get(i)) <= 0) j--;
+
+    Collections.swap(list, i, j);
+    Collections.reverse(list.subList(i + 1, n));
+    return true;
   }
 
   public static <T> Set<List<T>> combinationsWithRepetition(List<T> input, int k) {

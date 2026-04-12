@@ -11,18 +11,21 @@ public class Logarithm extends Operation {
     this.cachedResult = CachedComputation.computedWith(() -> log(this.lhs.value(), this.rhs.value()));
   }
 
+  private static String createErrorMessage(int base, int antiLogarithm) {
+    return String.format("log evaluation failed: [base=%d, antiLogarithm=%d]", base, antiLogarithm);
+  }
+
   private static int log(int base, int antiLogarithm) {
-    String errorMessage = String.format("log evaluation failed: [base=%d, antiLogarithm=%d]", base, antiLogarithm);
     if (base <= 1 || antiLogarithm <= 0 || base > antiLogarithm) {
-      throw new IllegalArgumentException(errorMessage);
+      throw new IllegalArgumentException(createErrorMessage(base, antiLogarithm));
     }
     int logarithm = (int) (Math.log(antiLogarithm) / Math.log(base));
     try {
       if (Math.powExact(base, logarithm) != antiLogarithm) {
-        throw new IllegalArgumentException(errorMessage);
+        throw new IllegalArgumentException(createErrorMessage(base, antiLogarithm));
       }
     } catch (ArithmeticException e) {
-      throw new IllegalArgumentException(errorMessage, e);
+      throw new IllegalArgumentException(createErrorMessage(base, antiLogarithm));
     }
     return logarithm;
   }

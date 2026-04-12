@@ -47,7 +47,7 @@ public abstract class Operation {
 
   @Override
   public int hashCode() {
-    return Objects.hash(lhs) ^ Objects.hash(rhs);
+    return Objects.hash(getClass()) ^ Objects.hash(lhs) ^ Objects.hash(rhs);
   }
 
   public String toString() {
