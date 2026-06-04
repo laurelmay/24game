@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*'
     paths-ignore:
       - helm/**
       - ansible/**
@@ -33,7 +35,7 @@ jobs:
         run: ./gradlew build
       - name: Get version information
         run: |
-          echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
+          echo "VERSION=$(cat build/version.txt)" >> $GITHUB_ENV
       - name: Build image
         id: build-image
         uses: redhat-actions/buildah-build@v2

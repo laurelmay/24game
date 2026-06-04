@@ -1,11 +1,28 @@
 plugins {
 	java
-	id("org.springframework.boot") version "4.0.3"
+	id("org.springframework.boot") version "4.0.6"
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
+val gitTagProvider = providers.exec {
+  commandLine("git", "describe", "--tags", "--always", "--dirty")
+}
+
+fun getVersionFromGit(): String {
+  val tag = gitTagProvider.standardOutput.asText.get().trim()
+  val data = tag.split("\\-".toRegex(), 2)
+  val parts = data[0].replaceFirst("^v".toRegex(), "").split("\\.".toRegex()).map { it.toInt() }.toIntArray()
+  return if (data.size == 1) {
+    parts.joinToString(".")
+  } else {
+    parts[2] += 1
+    val newVersion = parts.joinToString(".")
+    newVersion + "-SNAPSHOT"
+  }
+}
+
 group = "me.laurelmay"
-version = rootProject.file("version.txt").readText(Charsets.UTF_8).trim()
+version = getVersionFromGit()
 description = "game24"
 
 java {
@@ -39,4 +56,18 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.register("createVersionFile") {
+  inputs.property("version", project.version.toString())
+  val versionFile = layout.buildDirectory.file("version.txt")
+  outputs.file(versionFile)
+
+  doLast {
+    versionFile.get().asFile.writeText(project.version.toString())
+  }
+}
+
+tasks.named("build") {
+  dependsOn("createVersionFile")
 }
